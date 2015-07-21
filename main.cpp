@@ -15,10 +15,6 @@ public:
         registerMethod("sum", static_cast<Method>(&MyUnit::sum));
     }
 
-    //------------------------------------------------------
-    // Scriptable methods
-    //------------------------------------------------------
-
     // Sum all arguments
     Variant sum(const VariantList &args)
     {
