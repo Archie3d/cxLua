@@ -1,8 +1,10 @@
-# cxLua
-Simple C++ wrapper for Lua VM.
+#include <iostream>
+#include "LuaEngine.h"
 
-Here is an example using the library:
-```cpp
+//
+// Example of Lua Engine usage
+//
+
 // Class that will be exposed to the Lua engine
 class MyUnit : public Scriptable
 {
@@ -57,4 +59,3 @@ int main()
 
     return 0;
 }
-```

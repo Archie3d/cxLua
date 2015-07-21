@@ -1,0 +1,43 @@
+# depslib dependency file v1.0
+1437491787 source:c:\prj\cxlua\main.cpp
+	<iostream>
+	"LuaEngine.h"
+
+1436201028 source:c:\prj\cxlua\utils.cpp
+	"Utils.h"
+
+1436286924 c:\prj\cxlua\utils.h
+	<string>
+	<sstream>
+
+1437492106 source:c:\prj\cxlua\luaengine.cpp
+	<lua.h>
+	<lauxlib.h>
+	<lualib.h>
+	<sstream>
+	"LuaEngine.h"
+
+1437491884 c:\prj\cxlua\luaengine.h
+	"Variant.h"
+	"Scriptable.h"
+
+1437491219 c:\prj\cxlua\variant.h
+	<string>
+	<list>
+	<map>
+
+1437491702 c:\prj\cxlua\scriptable.h
+	<string>
+	<map>
+	"Variant.h"
+
+1437491210 source:c:\prj\cxlua\variant.cpp
+	<string.h>
+	<sstream>
+	<iomanip>
+	"Utils.h"
+	"Variant.h"
+
+1437491352 source:c:\prj\cxlua\scriptable.cpp
+	"Scriptable.h"
+
