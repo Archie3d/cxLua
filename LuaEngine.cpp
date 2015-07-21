@@ -46,13 +46,45 @@ static int scriptableObjectGateway(lua_State *pLuaState)
 
 	// Invoke the method
 	Variant ret = pScriptable->invokeMethod(methodName, args);
-	if (!ret.isValid()) {
-		// No return value from the method
-		return 0;
+	if (ret.isValid()) {
+        pLuaEngine->pushValue(ret);
+		return 1;
 	}
 
-	pLuaEngine->pushValue(ret);
-	return 1;
+    // No return value from the method
+	return 0;
+}
+
+static int nativeFunctionGateway(lua_State *pLuaState)
+{
+    LuaEngine *pLuaEngine = getLuaEngine(pLuaState);
+
+    // Get native function pointer
+    void *ptr = lua_touserdata(pLuaState, lua_upvalueindex(1));
+    LuaEngine::NativeFunction func = reinterpret_cast<LuaEngine::NativeFunction>(reinterpret_cast<size_t>(ptr));
+
+    // Get user data
+    void *pData = lua_touserdata(pLuaState, lua_upvalueindex(2));
+
+    // Get number of arguments
+    int nArgs = lua_gettop(pLuaState);
+
+    // Fetch arguments
+    VariantList args;
+    for (int i = 0; i < nArgs; i++) {
+        args.push_front(pLuaEngine->popValue());
+    }
+
+    // Call native function
+    Variant res = func(args, pData);
+
+    if (res.isValid()) {
+        pLuaEngine->pushValue(res);
+        return 1;
+    }
+
+    // No return value from the function
+    return 0;
 }
 
 struct LuaEngine::Private
@@ -291,6 +323,16 @@ void LuaEngine::registerObject(const std::string &objectName, Scriptable *pScrip
 	}
 
 	lua_setglobal(m->pLuaState, objectName.c_str());
+}
+
+void LuaEngine::registerFunction(const std::string &funcName, LuaEngine::NativeFunction func, void *pData)
+{
+    if (func) {
+        pushData(reinterpret_cast<void*>(reinterpret_cast<size_t>(func)));
+        pushData(pData);
+        lua_pushcclosure(m->pLuaState, nativeFunctionGateway, 2);
+        lua_setglobal(m->pLuaState, funcName.c_str());
+    }
 }
 
 Variant LuaEngine::globalValue(const std::string &identifier)

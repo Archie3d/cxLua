@@ -6,10 +6,14 @@
 
 struct lua_State;
 
+/**
+ * C++ wrapper for Lua VM
+ */
 class LuaEngine
 {
 public:
 
+    /// Lua global reference helper
 	class Reference
 	{
 	public:
@@ -29,6 +33,9 @@ public:
 		std::string m_identifier;
 		mutable LuaEngine *m_pLuaEngine;
 	};
+
+    /// Native function
+    typedef Variant (*NativeFunction)(const VariantList &args, void *pData);
 
     LuaEngine();
     LuaEngine(lua_State *pLuaState);
@@ -53,6 +60,8 @@ public:
                    const VariantList &args = VariantList());
 
     void registerObject(const std::string &objectName, Scriptable *pScriptable);
+
+    void registerFunction(const std::string &funcName, NativeFunction func, void *pData = 0);
 
     Variant globalValue(const std::string &identifier);
     void setGlobalValue(const std::string &identifier, const Variant &value);

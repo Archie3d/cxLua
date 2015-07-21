@@ -29,6 +29,19 @@ public:
 
 };
 
+// Function to be exposed to the Lua engine
+Variant lua_test(const VariantList &args, void *pData)
+{
+    (void)pData;    // Not used
+
+    // Print passed arguments
+    for (VariantList::const_iterator it = args.begin(); it != args.end(); ++it) {
+        std::cout << (*it) << std::endl;
+    }
+
+    return Variant();
+}
+
 int main()
 {
     LuaEngine lua;
@@ -49,11 +62,24 @@ int main()
     // 4. Read Lua global variable
     std::cout << "GlobalValue = " << lua["GlobalValue"].value() << std::endl;
 
-    // 5. Expose native code to Lua
+    // 5. Expose C++ object to Lua
     MyUnit myUnit;
     lua.registerObject("MyUnit", &myUnit);
     lua.evaluate("local s = MyUnit.sum(1, 2, 3, 4, 5)\n"
                  "print('sum = ' .. s)");
+
+    // 6. Expose function to Lua
+    lua.registerFunction("test", lua_test);
+    lua.evaluate("test('a', 'b', 'c')");
+
+    // 7. Expose lambda-function to Lua
+    lua.registerFunction("test2", [](const VariantList &args, void *pData) -> Variant {
+                            for (VariantList::const_iterator it = args.begin(); it != args.end(); ++it) {
+                                std::cout << (*it) << std::endl;
+                            }
+                            return Variant();
+                         });
+    lua.evaluate("test2(1, 2, 3)");
 
     return 0;
 }

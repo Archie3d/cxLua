@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1437491787 source:c:\prj\cxlua\main.cpp
+1437492927 source:c:\prj\cxlua\main.cpp
 	<iostream>
 	"LuaEngine.h"
 
@@ -10,14 +10,14 @@
 	<string>
 	<sstream>
 
-1437492106 source:c:\prj\cxlua\luaengine.cpp
+1437494184 source:c:\prj\cxlua\luaengine.cpp
 	<lua.h>
 	<lauxlib.h>
 	<lualib.h>
 	<sstream>
 	"LuaEngine.h"
 
-1437491884 c:\prj\cxlua\luaengine.h
+1437493498 c:\prj\cxlua\luaengine.h
 	"Variant.h"
 	"Scriptable.h"
 
